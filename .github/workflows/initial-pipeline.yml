@@ -16,13 +16,14 @@ jobs:
         
   build:
     runs-on: ubuntu-latest
+    needs: [integration]
     environment: development
     steps:
       - uses: actions/checkout@v3
       - run: echo "- Build the artifact"
 
   test-artifact:
-    needs: development
+    needs: [development]
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -30,14 +31,14 @@ jobs:
       - run: echo "- Simulate and test the artifact"
 
   development:
-    needs: build
+    needs: [build]
     runs-on: ubuntu-latest
     environment: development
     steps:
       - run: echo "- Auto-deploy the artifact to the development environment"
         
   staging:
-    needs: test-artifact
+    needs: [test-artifact]
     runs-on: ubuntu-latest
     environment: staging
     steps:
@@ -47,14 +48,14 @@ jobs:
           echo "- Auto-deploy the artifact to the staging environment"
         
   test-staging:
-    needs: staging
+    needs: [staging]
     runs-on: ubuntu-latest
     environment: staging
     steps:
       - run: echo "- Test the staging environment"
         
   production:
-    needs: test-staging
+    needs: [test-staging]
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -65,7 +66,7 @@ jobs:
           echo "- Deploy the artifact to the production environment"
 
   test-production:
-    needs: production
+    needs: [production]
     runs-on: ubuntu-latest
     environment: production
     steps:
