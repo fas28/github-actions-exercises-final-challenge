@@ -54,7 +54,6 @@ jobs:
       - run: echo "- Test the staging environment"
         
   production:
-    needs: staging
     needs: test-staging
     runs-on: ubuntu-latest
     environment: production
